@@ -10,25 +10,32 @@ namespace ECommerce.API.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly ISender _mediator;
+        
 
         public ProductsController(ISender mediator)
         {
             _mediator = mediator;
+           
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            
             var query = new GetAllProductsQuery();
             var result = await _mediator.Send(query);
+            
             return Ok(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateProductCommand command)
         {
+           
             var productId = await _mediator.Send(command);
+           
             return CreatedAtAction(nameof(GetAll), new { id = productId }, productId);
+
         }
     }
 }
